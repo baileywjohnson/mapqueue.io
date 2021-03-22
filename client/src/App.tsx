@@ -1,31 +1,39 @@
 import React from 'react';
-import './App.css';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+
+import { useEffect } from 'react'
 
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import WIPAlert from './components/WIPAlert';
 
-function App() {
+import Home from './components/Home';
+import QueueBot from './components/QueueBot';
+import Queues from './components/Queues';
+import Create from './components/Create';
+import NotFound from './components/NotFound';
+
+const App = () => {
+
+  useEffect(() => {
+    document.getElementById('dispContainer')!.scrollTo(0, 0);
+  }, []);
+
   return (
-    <div className="App">
+    <Router basename={process.env.PUBLIC_URL}>
       <Navbar />
-      <div className="container my-5">
-        <div className="row justify-content-center">
-          <img alt='Black OSU Logo' src={process.env.PUBLIC_URL + '/osu-logo-black.png'} style={{width: '15%', maxWidth: '140px', minWidth: '100px'}}/>
-        </div>
-        <div className="row justify-content-center">
-          <h1>MapQueue</h1>
-        </div>  
-        <div className="row justify-content-center">
-          <p className="my-2 text-center" style={{width: '90%'}}>MapQueue is a service that allows users to create queues of beatmaps for "osu!".  Provide <a href="https://mapqueue.io/queuebot" rel="noreferrer" target="_blank" style={{color: 'black', textDecoration: 'underline'}}>QueueBot 🤖</a> with a link to a specific queue to auto-rotate through the songs in the queue.</p>
-        </div>
+      <div id="dispContainer">
+        <Switch>
+          <Route path='/' exact render={() => {return <Home />}} />
+          <Route path='/queuebot' render={() => {return <QueueBot />}} />
+          <Route path='/queues' render={() => {return <Queues />}} />
+          <Route path='/create' render={() => {return <Create />}} />
+          <Route render={() => {return <NotFound />}} />
+        </Switch>
       </div>
-      <div className="alert alert-warning alert-dismissible fade show fixed-bottom" role="alert" style={{margin: 0}}>
-        <p className="text-center" style={{margin: 0}}><strong>Warning: </strong> MapQueue is a work-in-progress and may not function as expected.</p>
-        <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <p className="text-center">&#11088; Created by <a href="https://github.com/baileywjohnson/mapqueue.io" rel="noreferrer" target="_blank" style={{color: 'black', textDecoration: 'underline'}}>Bailey Johnson</a></p>
-    </div>
+      <Footer />
+      <WIPAlert />
+    </Router>
   );
 }
 
