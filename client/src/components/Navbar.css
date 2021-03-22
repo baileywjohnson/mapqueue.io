@@ -1,0 +1,16 @@
+@media screen and (max-width:600px) and (min-width:440px) {
+    .navbar-right {
+      float: right!important;
+    }
+    .navbar-nav>li {
+      float: left;
+      margin: 5px 0;
+    }
+    .navbar-header {
+      float: left
+    }
+    .navbar-toggle {
+      display: none
+    }
+  
+  }
