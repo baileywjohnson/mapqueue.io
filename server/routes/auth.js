@@ -20,24 +20,25 @@ router.post('/verify', jwtAuth, async (req, res) => {
 
 router.post('/login', async (req, res) => {
     try {
-        //(Email or Username) + Password Will Be Sent
-        const {email, username, password} = req.body;
+        const {mailname, password} = req.body;
         const validUser = await pool.query(
-            "SELECT * FROM users WHERE (user_email = $1) OR (user_name = $2)",
-            [email, username]
+            "SELECT * FROM users WHERE (user_email = $1) OR (user_name = $1)",
+            [mailname]
         );
         if(validUser.rows.length == 0){
-            return res.status(401).json("Unauthenticated (Invalid Email/Password)");
+            return res.status(401).json("Unauthenticated (Invalid Email/Username or Password)");
         }
         else{
             const pwCheck = await bcrypt.compare(password, validUser.rows[0].user_password);
             if(!pwCheck){
-                return res.status(401).json("Unauthenticated (Invalid Email/Password)");
+                return res.status(401).json("Unauthenticated (Invalid Email/Username or Password)");
             }
             else{
                 //Valid Login, Generate Token
+                console.log(validUser.rows[0]);
                 const token = generateJWT(validUser.rows[0].user_id);
-                return res.json({ token });
+                const name = validUser.rows[0].user_name;
+                return res.json({ token, name });
             }
         }
     } catch (error) {
@@ -49,10 +50,10 @@ router.post('/login', async (req, res) => {
 router.post('/register', async (req, res) => {
     try {
         //All Three Will Be Sent
-        const {email, username, password} = req.body;
+        const {email_reg, username_reg, password_one_reg} = req.body;
         const existingUser = await pool.query(
             "SELECT * FROM users WHERE (user_email = $1) OR (user_name = $2)",
-            [email, username]
+            [email_reg, username_reg]
         );
 
         if(existingUser.rows.length > 0){
@@ -61,16 +62,18 @@ router.post('/register', async (req, res) => {
         else{
             //User Does Not Exist
             const salt = await bcrypt.genSalt(10);
-            const password_bcrypt = await bcrypt.hash(password, salt);
+            const password_bcrypt = await bcrypt.hash(password_one_reg, salt);
 
-            let user = await pool.query(
+            const user = await pool.query(
                 "INSERT INTO users (user_name, user_email, user_password) VALUES ($1, $2, $3) RETURNING *",
-                [username, email, password_bcrypt]
+                [username_reg, email_reg, password_bcrypt]
             );
 
             //Generate & Respond w/ Auth Token
+            console.log(user.rows[0]);
             const token = generateJWT(user.rows[0].user_id);
-            return res.json({ token });
+            const name = user.rows[0].user_name;
+            return res.json({ token, name });
         }
     } catch (error) {
         console.error(error.message);

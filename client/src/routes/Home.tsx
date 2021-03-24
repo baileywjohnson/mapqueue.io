@@ -1,6 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-const Home = () => {
+const Home = ({isAuth}:any) => {
     return (
         <div className="container my-5">
         <div className="row justify-content-center" style={{alignItems: 'flex-start'}}>
@@ -10,7 +11,8 @@ const Home = () => {
           <h1>MapQueue</h1>
         </div>  
         <div className="row justify-content-center">
-          <p className="my-2 text-center" style={{width: '90%'}}>MapQueue is a service that allows users to create queues of beatmaps for "osu!".  Provide <a href="https://mapqueue.io/queuebot" rel="noreferrer" target="_blank" style={{color: 'black', textDecoration: 'underline'}}>QueueBot 🤖</a> with a link to a specific queue to auto-rotate through the songs in the queue.</p>
+          <p className="my-2 text-center" style={{width: '90%'}}>MapQueue is a service that allows users to create queues of beatmaps for "osu!".  Provide <Link to="/queuebot" style={{color: 'black', textDecoration: 'underline'}}>QueueBot 🤖</Link> with a link to a specific queue to auto-rotate through the songs in the queue.</p>
+          <h3 className="my-5">{isAuth ? "✅ Authenticated" : "❌ Not Authenticated"}</h3>
         </div>
       </div>
     )

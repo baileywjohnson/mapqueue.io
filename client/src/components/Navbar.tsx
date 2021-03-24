@@ -3,27 +3,45 @@ import {Link} from 'react-router-dom';
 
 import Login from './Login';
 
-const Navbar = () => {
+const Navbar = ({isAuth, setAuth, user, setUser}:any) => {
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-            <Link to='/'><a className="navbar-brand mr-5" href="https://mapqueue.io">MapQueue</a></Link>
+            <Link className="navbar-brand mr-5" to='/'>MapQueue</Link>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>
 
             <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
-                <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
+                <ul className="navbar-nav ml-auto mt-2 mt-lg-0 w-100">
                     <li className="nav-item">
-                        <Link to='/queuebot'><a className="nav-link" href="https://mapqueue.io/queuebot">QueueBot <span className="sr-only">(current)</span></a></Link>
+                        <Link className="nav-link" to='/queuebot'>QueueBot <span className="sr-only">(current)</span></Link>
                     </li>
                     <li className="nav-item">
-                        <Link to='/queues'><a className="nav-link" href="https://mapqueue.io/queues">Queues</a></Link>
+                        <Link className="nav-link" to='/queues'>Queues</Link>
                     </li>
                     <li className="nav-item">
-                        <Link to='/create'><a className="nav-link disabled" href="https://mapqueue.io/create">Create</a></Link>
+                        {
+                            isAuth ?
+                            <Link className="nav-link" to='/create'>Create</Link>
+                            : <Link className="nav-link disabled" to='/create' style={{pointerEvents: 'none'}}>Create</Link>
+                        }
                     </li>
+                    {
+                        isAuth ?
+                        <React.Fragment>
+                            <li className="nav-item ml-auto mr-5">
+                                <p className="my-2 text-center" style={{color: 'white'}}>😁 {user.name}</p>
+                            </li>
+                            <li className="nav-item">
+                                <Login isAuth={isAuth} setAuth={setAuth} setUser={setUser}/>
+                            </li>
+                        </React.Fragment>
+                        :
+                        <li className="nav-item ml-auto">
+                            <Login isAuth={isAuth} setAuth={setAuth} setUser={setUser}/>
+                        </li>
+                    }
                 </ul>
-                <Login />
             </div>
         </nav>
     )
