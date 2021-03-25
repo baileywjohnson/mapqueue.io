@@ -17,13 +17,16 @@ const App = () => {
 
   const authCheck = async () => {
     try {
-      const verifyAuth = await fetch(process.env.API_URL + '/auth/verify', {
+      const verifyAuth = await fetch(process.env.REACT_APP_API_URL + '/auth/verify', {
         method: "POST",
         headers: { jwt_token: localStorage.token }
       });
       const verifyAuthJSON = await verifyAuth.json();
-      if(verifyAuthJSON){
-        setAuthenticated(true);
+      if(verifyAuthJSON.status){
+        const status = verifyAuthJSON.status;
+        const name = verifyAuthJSON.user.name;
+        setActiveUser({ name });
+        setAuthenticated(status);
       }
       else{
         setAuthenticated(false);

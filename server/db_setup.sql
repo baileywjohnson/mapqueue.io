@@ -23,6 +23,7 @@ CREATE TABLE queues(
     queue_favorites INTEGER DEFAULT 0,
     queue_description VARCHAR(255),
     queue_beatmaps INTEGER [],
+    queue_plays INTEGER DEFAULT 0,
     PRIMARY KEY (queue_ID),
     FOREIGN KEY (queue_creator) REFERENCES users(user_id)
 );

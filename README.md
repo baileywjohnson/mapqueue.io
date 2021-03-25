@@ -4,8 +4,8 @@
 
 Assuming PostgreSQL is installed and configured, run the SQL in "db_setup.sql" to configure the tables for MapQueue.
 
-Adjust/add-in the values in "default.json.example" config file and remove the ".example" extension.
+Adjust/add-in the values in "/config/default.json.example" config file and remove the ".example" extension.
 
 ## Client
 
-Adjust/add-in the values in ".env.example" and remove the ".example extension."
+Adjust the value in ".env.example" to point to the location of the hosted API and remove the ".example" extension.

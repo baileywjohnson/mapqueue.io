@@ -6,7 +6,7 @@ import Login from './Login';
 const Navbar = ({isAuth, setAuth, user, setUser}:any) => {
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-            <Link className="navbar-brand mr-5" to='/'>MapQueue</Link>
+            <Link className="navbar-brand mr-5" to='/'>MapQueue ⚡</Link>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>
@@ -19,7 +19,7 @@ const Navbar = ({isAuth, setAuth, user, setUser}:any) => {
                     <li className="nav-item">
                         <Link className="nav-link" to='/queues'>Queues</Link>
                     </li>
-                    <li className="nav-item">
+                    <li className="nav-item ml-2">
                         {
                             isAuth ?
                             <Link className="nav-link" to='/create'>Create</Link>
@@ -30,7 +30,7 @@ const Navbar = ({isAuth, setAuth, user, setUser}:any) => {
                         isAuth ?
                         <React.Fragment>
                             <li className="nav-item ml-auto mr-5">
-                                <p className="my-2 text-center" style={{color: 'white'}}>😁 {user.name}</p>
+                                <Link className="nav-link" style={{color: 'white'}} to={'/users/' + user.name}>😁 <u>{user.name}</u></Link>
                             </li>
                             <li className="nav-item">
                                 <Login isAuth={isAuth} setAuth={setAuth} setUser={setUser}/>
